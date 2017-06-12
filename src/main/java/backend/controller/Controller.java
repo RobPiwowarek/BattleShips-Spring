@@ -1,8 +1,8 @@
-package hello.controller;
+package backend.controller;
 
-import hello.controller.dto.FieldDTO;
-import hello.domain.Field;
-import hello.domain.FieldRepository;
+import backend.controller.dto.FieldDTO;
+import backend.domain.Field;
+import backend.domain.FieldRepository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

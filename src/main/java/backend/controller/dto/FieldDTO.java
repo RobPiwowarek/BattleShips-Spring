@@ -1,6 +1,6 @@
-package hello.controller.dto;
+package backend.controller.dto;
 
-import hello.domain.Field;
+import backend.domain.Field;
 import lombok.Data;
 
 @Data

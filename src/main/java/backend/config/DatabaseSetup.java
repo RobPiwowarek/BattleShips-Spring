@@ -1,7 +1,7 @@
-package hello.config;
+package backend.config;
 
-import hello.domain.Field;
-import hello.domain.FieldRepository;
+import backend.domain.Field;
+import backend.domain.FieldRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

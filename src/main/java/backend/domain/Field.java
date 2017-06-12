@@ -1,4 +1,4 @@
-package hello.domain;
+package backend.domain;
 
 import lombok.Getter;
 import lombok.Setter;
