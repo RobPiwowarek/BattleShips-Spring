@@ -21,8 +21,9 @@ public class Controller {
     @Autowired
     private FieldRepository fieldRepository;
 
-    @GetMapping(value = "/field/")
+    @GetMapping(value = "/field")
     public FieldDTO getSpecificField(@RequestParam Integer x, @RequestParam Integer y) {
+
         return new FieldDTO(fieldRepository.findByXAndY(x, y));
     }
 
