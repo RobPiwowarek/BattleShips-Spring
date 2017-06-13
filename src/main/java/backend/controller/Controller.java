@@ -3,6 +3,7 @@ package backend.controller;
 import backend.controller.dto.FieldDTO;
 import backend.domain.Field;
 import backend.domain.FieldRepository;
+import backend.domain.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,6 +21,9 @@ public class Controller {
 
     @Autowired
     private FieldRepository fieldRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(value = "/field")
     public FieldDTO getSpecificField(@RequestParam Integer x, @RequestParam Integer y) {
