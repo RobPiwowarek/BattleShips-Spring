@@ -1,5 +1,6 @@
 package backend.domain;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class FieldRepositoryTest {
         repository.save(field55);
         repository.save(field77);
 
-        ArrayList<Field> fields = (ArrayList<Field>) repository.findByOccupacy(true);
+        ArrayList<Field> fields = (ArrayList<Field>) repository.findByIsOccupied(true);
 
         assertTrue(field55.getX() == fields.get(0).getX());
         assertTrue(field55.getY() == fields.get(0).getY());
@@ -47,14 +48,15 @@ public class FieldRepositoryTest {
 
     @Test
     public void whenSearchingForOccupiedFieldsIfNoFieldsAreOccupiedThenReturnedCollectionIsEmpty() {
-        ArrayList<Field> fields = (ArrayList<Field>) repository.findByOccupacy(true);
+        ArrayList<Field> fields = (ArrayList<Field>) repository.findByIsOccupied(true);
 
         assertTrue(fields.size() == 0);
     }
 
     @Test
-    @Transactional
     public void whenSearchingForFieldWithXAndYReturnThenFieldWithCorrectXAndYIsReturned() {
+        System.out.println(repository.findAll().size());
+
         Field field12 = repository.findByXAndY(1, 2);
 
         assertTrue(field12.getX() == 1);

@@ -12,6 +12,6 @@ public class FieldDTO {
     public FieldDTO(Field field) {
         x = field.getX();
         y = field.getY();
-        occupied = field.isOccupacy();
+        occupied = field.isOccupied();
     }
 }

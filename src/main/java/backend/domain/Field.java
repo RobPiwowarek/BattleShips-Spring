@@ -22,7 +22,7 @@ public class Field {
 
     private Integer y;
 
-    private boolean occupacy;
+    private boolean isOccupied;
 
     public Field() {
     }
@@ -30,6 +30,6 @@ public class Field {
     public Field(Integer x, Integer y, boolean occupied) {
         this.x = x;
         this.y = y;
-        this.occupacy = occupied;
+        this.isOccupied = occupied;
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FieldRepository extends JpaRepository<Field, Long> {
 
-    List<Field> findByOccupacy(Boolean isOccupied);
+    List<Field> findByIsOccupied(Boolean isOccupied);
 
     Field findByXAndY(Integer x, Integer y);
 }

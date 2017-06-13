@@ -7,7 +7,7 @@ import lombok.Data;
 public class UserDTO {
     private String nick;
 
-    UserDTO(User user){
+    UserDTO(User user) {
         nick = user.getNick();
     }
 

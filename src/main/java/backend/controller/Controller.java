@@ -34,7 +34,7 @@ public class Controller {
     @GetMapping
     public List<FieldDTO> getAllOccupiedFieldsFromDatabase() {
         return fieldRepository
-                .findByOccupacy(true)
+                .findByIsOccupied(true)
                 .stream()
                 .map(FieldDTO::new)
                 .collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class Controller {
     public void setOccupiedField(@RequestBody Message data) {
 
         Field field = fieldRepository.findByXAndY(data.getX(), data.getY());
-        field.setOccupacy(true);
+        field.setOccupied(true);
 
         fieldRepository.save(field);
 
