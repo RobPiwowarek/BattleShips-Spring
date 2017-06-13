@@ -32,8 +32,8 @@ class DatabaseSetup implements CommandLineRunner {
             }
         }
 
-        userRepository.save(new User("User1"));
-        userRepository.save(new User("User2"));
+        userRepository.save(new User("User1", "password1"));
+        userRepository.save(new User("User2", "password2"));
         //fieldRepository.findAll().forEach(System.out::println);
     }
 

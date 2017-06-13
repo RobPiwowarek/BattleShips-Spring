@@ -1,87 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Totally not a game</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 200px;
-            height: 200px;
-            resize: none
-        }
-
-        th, td {
-
-             background-color: red;
-        }
-
-        table, th, td {
-            border: 2px solid black;
-         }
-
-    </style>
-
-</head>
+<html>
+<head></head>
 <body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
-<script>
-    function error(data) {
-        alert("Error sending message");
-    }
-
-    function success(result) {
-        alert("Success");
-    }
-
-    var app = angular.module('myApp', []);
-    app.controller('customersCtrl', function($scope, $http) {
-
-        $scope.post = function(x, y){
-
-            $http.post('http://localhost:8080', ({"x" : x, "y" : y})).then(success, error);
-
-            document.getElementsByTagName("td")[y*6+x].style.backgroundColor = "black";
-        }
-
-        $scope.updateBoard = function (fieldList) {
-            $scope.boardData = fieldList;
-
-            var i;
-
-            for (i = 0; i < fieldList.length; i++) {
-                document.getElementsByTagName("td")[fieldList[i].y*6+fieldList[i].x].style.backgroundColor = "black";
-            }
-        }
-
-        $scope.proceed = function(){
-            $http.post('http://localhost:8080', ({"x" : "4", "y" : "5"})).then(success, error);
-        }
-
-        $http.get('http://localhost:8080').then(function updateBoard(response){
-            alert(response.data.length)
-            $scope.updateBoard(response.data);
-        });
-    });
-
-</script>
-
-
-<div ng-app="myApp" ng-controller="customersCtrl">
-
-    <div id="Grid">
-        <table>
-            <tr ng-repeat="rows in [0, 1, 2, 3, 4, 5] track by $index">
-                <td ng-repeat="column in [0, 1, 2, 3, 4, 5] track by $index" ng-click="post(column, rows)"></td>
-            </tr>
-        </table>
-    </div>
-
-</div>
-
+<h1>Login</h1>
+<form name='f' action="login" method='POST'>
+    <table>
+        <tr>
+            <td>User:</td>
+            <td><input type='text' name='username' value=''></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type='password' name='password' /></td>
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="submit" /></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>
