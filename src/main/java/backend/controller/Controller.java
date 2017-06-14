@@ -8,15 +8,17 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8000")
+@CrossOrigin
 public class Controller {
 
     @Autowired
@@ -25,14 +27,20 @@ public class Controller {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping(value = "/login")
+    public void notSureIfNeeded(){}
+
     @GetMapping(value = "/field")
     public FieldDTO getSpecificField(@RequestParam Integer x, @RequestParam Integer y) {
 
         return new FieldDTO(fieldRepository.findByXAndY(x, y));
     }
 
-    @GetMapping
-    public List<FieldDTO> getAllOccupiedFieldsFromDatabase() {
+    @GetMapping(value = "/")
+    public List<FieldDTO> getAllOccupiedFieldsFromDatabase(Principal principal) {
+
+        System.out.println(principal.getName());
+
         return fieldRepository
                 .findByIsOccupied(true)
                 .stream()
@@ -41,10 +49,15 @@ public class Controller {
     }
 
     @RequestMapping(value = "/", method = POST)
-    public void setOccupiedField(@RequestBody Message data) {
+    public void setOccupiedField(@RequestBody Message data, Principal principal) {
 
         Field field = fieldRepository.findByXAndY(data.getX(), data.getY());
         field.setOccupied(true);
+
+        if (principal.getName().equals("user"))
+            field.setColor("blue");
+        else
+            field.setColor("green");
 
         fieldRepository.save(field);
 

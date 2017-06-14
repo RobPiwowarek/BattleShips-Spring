@@ -1,0 +1,22 @@
+<html>
+<div ng-app='myApp' ng-controller="loginCtrl">
+    <body>
+    <h1>Login</h1>
+
+    <table>
+        <tr>
+            <td>User:</td>
+            <td><input ng-model='username' type='text' name='username' value=''></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input ng-model='password' type='password' name='password' /></td>
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="submit" ng-click="logIn(username, password)"/></td>
+        </tr>
+    </table>
+
+    </body>
+</div>
+</html>

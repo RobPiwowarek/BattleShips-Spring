@@ -24,6 +24,8 @@ public class Field {
 
     private boolean isOccupied;
 
+    private String color;
+
     public Field() {
     }
 
@@ -31,5 +33,6 @@ public class Field {
         this.x = x;
         this.y = y;
         this.isOccupied = occupied;
+        color = "red";
     }
 }
