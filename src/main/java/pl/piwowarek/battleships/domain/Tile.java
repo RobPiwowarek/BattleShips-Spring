@@ -1,18 +1,14 @@
-package backend.domain;
+package pl.piwowarek.battleships.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@ToString
-@Getter
-@Setter
-public class Field {
+@Data
+public class Tile {
 
     @Id
     @GeneratedValue
@@ -26,10 +22,10 @@ public class Field {
 
     private String color;
 
-    public Field() {
+    public Tile() {
     }
 
-    public Field(Integer x, Integer y, boolean occupied) {
+    public Tile(Integer x, Integer y, boolean occupied) {
         this.x = x;
         this.y = y;
         this.isOccupied = occupied;

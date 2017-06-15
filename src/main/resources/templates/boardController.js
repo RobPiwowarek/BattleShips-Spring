@@ -1,5 +1,3 @@
-// TODO: different behaviour for get/post success/error
-
 var app = angular.module('myApp', ["ngRoute"]);
 
 app.config(function ($routeProvider) {
@@ -29,7 +27,7 @@ app.run(function ($rootScope, $location) {
     });
 });
 
-app.controller('boardCtrl', function ($rootScope, $scope, $http) {
+app.controller('boardCtrl', function ($rootScope, $scope, $http, $interval) {
 
     $scope.updateBoard = function (fieldList) {
         $scope.boardData = fieldList;
@@ -61,6 +59,9 @@ app.controller('boardCtrl', function ($rootScope, $scope, $http) {
     }
 
     $scope.getFields();
+
+    // ugly way to implement refreshing of board
+    //$interval($scope.getFields, 500);
 });
 
 app.controller('loginCtrl', function ($rootScope, $scope, $http, $location) {
