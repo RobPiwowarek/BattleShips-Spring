@@ -1,10 +1,4 @@
-function error(data) {
-    alert("Error sending message");
-}
-
-function success(response) {
-    alert("Success");
-}
+// TODO: different behaviour for get/post success/error
 
 var app = angular.module('myApp', ["ngRoute"]);
 
@@ -18,6 +12,22 @@ app.config(function ($routeProvider) {
     });
 
 })
+
+app.run( function($rootScope, $location) {
+
+        // register listener to watch route changes
+        $rootScope.$on("$locationChangeStart", function (event, next, current) {
+            if ($rootScope.loggedUser == null) {
+                // no logged user, we should be going to #login
+                if (next.templateUrl == "loginPage.html") {
+                    // already going to #login, no redirect needed
+                } else {
+                    // not going to #login, we should redirect now
+                    $location.path("/");
+                }
+            }
+        });
+    });
 
 app.controller('boardCtrl', function($rootScope, $scope, $http) {
 
@@ -36,7 +46,7 @@ app.controller('boardCtrl', function($rootScope, $scope, $http) {
 
         $http.get('http://localhost:8080').then(function (response) {
 
-            alert(response.data.length)
+            //alert(response.data.length)
             console.log(response.data)
             $scope.updateBoard(response.data);
         });
@@ -65,8 +75,12 @@ app.controller('loginCtrl', function($rootScope, $scope, $http, $location) {
 
         $http.defaults.headers.common['Authorization'] = $rootScope.authHeader;
 
-        $http.get('http://localhost:8080/login').then(function() {
+        $http.get('http://localhost:8080/login')
+            .then(function onSuccess() {
+            $rootScope.loggedUser = "true";
             $scope.boardView();
+        }).catch(function onError(response){
+            alert("BAD CREDENTIALS")
         });
 
     }
