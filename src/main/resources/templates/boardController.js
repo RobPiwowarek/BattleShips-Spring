@@ -1,32 +1,3 @@
-var app = angular.module('myApp', ["ngRoute"]);
-
-app.config(function ($routeProvider) {
-    $routeProvider
-        .when("/", {
-            templateUrl: "loginPage.html"
-        })
-        .when("/board", {
-            templateUrl: "board.html"
-        });
-
-})
-
-app.run(function ($rootScope, $location) {
-
-    // register listener to watch route changes
-    $rootScope.$on("$locationChangeStart", function (event, next, current) {
-        if ($rootScope.loggedUser == null) {
-            // no logged user, we should be going to #login
-            if (next.templateUrl == "loginPage.html") {
-                // already going to #login, no redirect needed
-            } else {
-                // not going to #login, we should redirect now
-                $location.path("/");
-            }
-        }
-    });
-});
-
 app.controller('boardCtrl', function ($rootScope, $scope, $http, $interval) {
 
     $scope.updateBoard = function (fieldList) {
@@ -44,7 +15,6 @@ app.controller('boardCtrl', function ($rootScope, $scope, $http, $interval) {
 
         $http.get('http://localhost:8080').then(function (response) {
 
-            //alert(response.data.length)
             console.log(response.data)
             $scope.updateBoard(response.data);
         });
@@ -54,38 +24,26 @@ app.controller('boardCtrl', function ($rootScope, $scope, $http, $interval) {
         $http.defaults.headers.common['Authorization'] = $rootScope.authHeader;
 
         $http.post('http://localhost:8080', ({"x": x, "y": y})).then(function (response) {
-            $scope.getFields();
+            $scope.getFields()
+        });
+
+    }
+
+    $scope.connect = function() {
+        var socket = new SockJS('http://localhost:8080/ws');
+        $scope.stompClient = Stomp.over(socket);
+        $scope.stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            $scope.stompClient.subscribe('/topic/greetings', function (greeting) {
+                $scope.getFields()
+            });
+
         });
     }
 
+    $scope.connect();
     $scope.getFields();
-
-    // ugly way to implement refreshing of board
-    //$interval($scope.getFields, 500);
 });
 
-app.controller('loginCtrl', function ($rootScope, $scope, $http, $location) {
 
-    $scope.boardView = function () {
-        $location.path("/board");
-    };
-
-    $scope.logIn = function (username, password) {
-
-        $rootScope.authHeader = 'Basic ' + window.btoa(username + ':' + password);
-
-        $http.defaults.headers.common['Authorization'] = $rootScope.authHeader;
-
-        $http.get('http://localhost:8080/')
-            .then(function onSuccess() {
-                $rootScope.loggedUser = "true";
-                $scope.boardView();
-            }).catch(function onError(response) {
-            alert("BAD CREDENTIALS")
-        });
-
-    }
-
-
-});
 

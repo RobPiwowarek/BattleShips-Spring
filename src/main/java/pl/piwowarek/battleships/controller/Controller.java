@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.log4j.Logger;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import pl.piwowarek.battleships.controller.dto.TileDto;
 import pl.piwowarek.battleships.domain.Tile;
@@ -21,8 +24,22 @@ public class Controller {
 
     private final TileRepository tileRepository;
 
-    public Controller(TileRepository tileRepository) {
+    private final SimpMessagingTemplate template;
+
+    public Controller(TileRepository tileRepository, SimpMessagingTemplate template) {
         this.tileRepository = tileRepository;
+        this.template = template;
+    }
+
+    @MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    private String notifySubscribersToRefreshBoard() throws Exception {
+        logger.info("notifying subscribers");
+
+
+        template.convertAndSend("/topic/greetings", "notify");
+
+        return "{\"refresh\":\"true\"}";
     }
 
     @GetMapping("/field")
@@ -44,7 +61,7 @@ public class Controller {
     }
 
     @PostMapping("/")
-    public void setOccupiedField(@RequestBody Message data, Principal principal) {
+    public void setOccupiedField(@RequestBody Message data, Principal principal) throws Exception {
         logger.info(principal.getName() + ":" + " POST " + data);
 
         Tile tile = tileRepository.findByXAndY(data.getX(), data.getY());
@@ -56,6 +73,7 @@ public class Controller {
             tile.setColor("green");
 
         tileRepository.save(tile);
+        notifySubscribersToRefreshBoard();
     }
 
 }

@@ -1,6 +1,5 @@
 package pl.piwowarek.battleships.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -12,10 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import pl.piwowarek.battleships.domain.Tile;
 import pl.piwowarek.battleships.domain.TileRepository;
-
-import java.security.Principal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
