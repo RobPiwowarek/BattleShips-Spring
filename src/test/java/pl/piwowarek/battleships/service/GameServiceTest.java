@@ -1,14 +1,10 @@
 package pl.piwowarek.battleships.service;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import pl.piwowarek.battleships.controller.dto.TileDto;
 import pl.piwowarek.battleships.domain.Tile;
 import pl.piwowarek.battleships.domain.TileRepository;
