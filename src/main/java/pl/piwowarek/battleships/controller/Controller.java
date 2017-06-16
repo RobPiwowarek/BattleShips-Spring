@@ -1,8 +1,5 @@
 package pl.piwowarek.battleships.controller;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -61,10 +58,3 @@ public class Controller {
 
 }
 
-@Getter
-@Setter
-@ToString
-class Message {
-    Integer x;
-    Integer y;
-}
