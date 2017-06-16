@@ -4,38 +4,34 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.apache.log4j.Logger;
-import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import pl.piwowarek.battleships.controller.dto.TileDto;
-import pl.piwowarek.battleships.domain.Tile;
-import pl.piwowarek.battleships.domain.TileRepository;
+import pl.piwowarek.battleships.service.GameService;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
 public class Controller {
-
     private final static Logger logger = Logger.getLogger(Controller.class);
-
-    private final TileRepository tileRepository;
 
     private final SimpMessagingTemplate template;
 
-    public Controller(TileRepository tileRepository, SimpMessagingTemplate template) {
-        this.tileRepository = tileRepository;
+    private final GameService gameService;
+
+    @Autowired
+    public Controller(SimpMessagingTemplate template, GameService gameService) {
         this.template = template;
+        this.gameService = gameService;
     }
 
-    @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     private String notifySubscribersToRefreshBoard() throws Exception {
         logger.info("notifying subscribers");
-
 
         template.convertAndSend("/topic/greetings", "notify");
 
@@ -43,36 +39,23 @@ public class Controller {
     }
 
     @GetMapping("/field")
-    public TileDto getSpecificField(@RequestParam Integer x, @RequestParam Integer y, Principal principal) {
-        logger.info(principal.getName() + ":" + " GET /field x: " + x + " y: " + y);
-
-        return new TileDto(tileRepository.findByXAndY(x, y));
+    public TileDto getSpecificField(@RequestParam Integer x, @RequestParam Integer y) {
+        return gameService.getSpecificField(x, y);
     }
 
     @GetMapping("/")
     public List<TileDto> getAllOccupiedFieldsFromDatabase(Principal principal) {
         logger.info(principal.getName() + ":" + " GET /");
 
-        return tileRepository
-                .findByIsOccupied(true)
-                .stream()
-                .map(TileDto::new)
-                .collect(Collectors.toList());
+        return gameService.getAllOccupiedFields();
     }
 
     @PostMapping("/")
     public void setOccupiedField(@RequestBody Message data, Principal principal) throws Exception {
         logger.info(principal.getName() + ":" + " POST " + data);
 
-        Tile tile = tileRepository.findByXAndY(data.getX(), data.getY());
-        tile.setOccupied(true);
+        gameService.setPostedTile(data.getX(), data.getY(), principal.getName());
 
-        if (principal.getName().equals("user"))
-            tile.setColor("blue");
-        else
-            tile.setColor("green");
-
-        tileRepository.save(tile);
         notifySubscribersToRefreshBoard();
     }
 

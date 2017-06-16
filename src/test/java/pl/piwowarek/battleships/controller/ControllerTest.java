@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pl.piwowarek.battleships.domain.TileRepository;
 
+import javax.transaction.Transactional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,7 +31,7 @@ public class ControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void whenGettingOneFieldThenCorrectFieldIsReturned() throws Exception {
+    public void whenGettingOneTileThenCorrectFieldIsReturned() throws Exception {
 
         String userHeader = "Basic " + new String(Base64.encodeBase64(("user:password").getBytes()));
 
@@ -45,6 +47,7 @@ public class ControllerTest {
 
 
     @Test
+    @Transactional
     public void whenPostingTileAsUserThenTileIsMarkedAsBlue() throws Exception {
 
         String userHeader = "Basic " + new String(Base64.encodeBase64(("user:password").getBytes()));
@@ -61,6 +64,7 @@ public class ControllerTest {
     }
 
     @Test
+    @Transactional
     public void whenPostingTileAsUser2ThenTileIsMarkedAsGreen() throws Exception {
 
         String userHeader = "Basic " + new String(Base64.encodeBase64(("user2:password2").getBytes()));
