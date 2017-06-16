@@ -21,11 +21,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
 public class GameServiceTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
     private GameService gameService;
     private TileRepository tileRepository;
 
